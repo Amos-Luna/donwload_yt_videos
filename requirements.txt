@@ -3,3 +3,5 @@ requests
 pytube
 streamlit
 yt-dlp
+ffmpeg
+pyffmpeg
