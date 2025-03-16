@@ -166,20 +166,22 @@ def extract_audio_to_wav(input_path, output_dir="./"):
     update_progress(st.session_state.progress_bar, 
                    st.session_state.status_text, 
                    0.5, 
-                   "Extrayendo audio en formato WAV...")
+                   "Extrayendo audio en formato WAV de alta calidad...")
 
     cmd = [
         "ffmpeg",
         "-y",
         "-i",
         input_path,
-        "-vn",
+        "-vn",                # Eliminar video
         "-acodec",
-        "pcm_s16le",
+        "pcm_s24le",          # 24-bit audio (mayor calidad que 16-bit)
         "-ar",
-        "16000",
+        "48000",              # Frecuencia de muestreo de 48kHz (calidad profesional)
         "-ac",
-        "1",
+        "2",                  # Audio estéreo (2 canales)
+        "-b:a",
+        "1411k",              # Bitrate equivalente a CD de audio (opcional)
         wav_path,
     ]
     
@@ -194,7 +196,7 @@ def extract_audio_to_wav(input_path, output_dir="./"):
         update_progress(st.session_state.progress_bar, 
                        st.session_state.status_text, 
                        1.0, 
-                       "¡Conversión completada!")
+                       "¡Conversión a WAV de alta calidad completada!")
         return wav_path
     except subprocess.CalledProcessError as e:
         error_msg = e.stderr if hasattr(e, 'stderr') else str(e)
